@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const profileLinks = {
   github: "https://github.com/yaswanthhari",
   linkedin: "https://linkedin.com/in/yaswanthhari",
@@ -33,7 +35,7 @@ const projects = [
     title: "Weather Forecast App",
     stack: ["Python", "Flask", "REST APIs", "JavaScript", "Matplotlib"],
     description:
-      "Full-stack weather application providing real-time weather data and 5-day forecasts with interactive temperature charts and city search using OpenWeatherMap API.",
+      "Full-stack weather app with real-time weather and 5-day forecasts, interactive charts, and city search using OpenWeatherMap API.",
     githubUrl: profileLinks.github
   },
   {
@@ -41,7 +43,7 @@ const projects = [
     title: "Electric Motor Temperature Prediction",
     stack: ["Python", "Pandas", "NumPy", "Scikit-learn", "Linear Regression"],
     description:
-      "Developed an ML model to predict electric motor temperature using real-world sensor data. Completed preprocessing, feature selection, and regression training with RMSE and R² evaluation.",
+      "ML model to predict electric motor temperature using sensor data with preprocessing, feature selection, regression training, RMSE and R² evaluation.",
     githubUrl: profileLinks.github
   },
   {
@@ -49,7 +51,7 @@ const projects = [
     title: "Student Performance Prediction",
     stack: ["Python", "Pandas", "NumPy", "Scikit-learn", "Google Colab"],
     description:
-      "Built a regression model to predict student final marks from study habits and academic history with data cleaning, feature engineering, and real-time prediction interface.",
+      "Regression model to predict final marks from study and attendance features with data cleaning, feature engineering, and model evaluation.",
     githubUrl: profileLinks.github
   },
   {
@@ -57,13 +59,40 @@ const projects = [
     title: "Seenu Cancer Treatment Website",
     stack: ["HTML5", "CSS3", "JavaScript", "Responsive Design"],
     description:
-      "Designed and developed a multi-page informational website focused on cancer treatment awareness, with semantic structure, accessible design, and clean responsive UI.",
+      "Multi-page awareness website with clean responsive UI, semantic HTML, and accessible structure.",
     githubUrl: profileLinks.github,
     liveUrl: profileLinks.portfolioDemo
   }
 ];
 
+const heroBackground =
+  "file:///C:/Users/use/.cursor/projects/d-portfolio/assets/c__Users_use_AppData_Roaming_Cursor_User_workspaceStorage_1c4c2b35b34650fe11143056f254d61b_images_image-e2661162-53a3-44c3-98d5-4ad12ddc85e3.png";
+const latestHeroBackground =
+  "file:///C:/Users/use/.cursor/projects/d-portfolio/assets/c__Users_use_AppData_Roaming_Cursor_User_workspaceStorage_1c4c2b35b34650fe11143056f254d61b_images_WhatsApp_Image_2026-04-20_at_8.16.20_PM-70ea2dad-acee-41fb-9418-29aec2c1c958.png";
+const deploySafeHeroImage = "/profile.png";
+
 function App() {
+  const imageCandidates = [deploySafeHeroImage, latestHeroBackground, heroBackground];
+  const [imageIndex, setImageIndex] = useState(0);
+
+  useEffect(() => {
+    const elements = document.querySelectorAll(".fade-up");
+    const observer = new IntersectionObserver(
+      (entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("appear");
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="app">
       <style>{`
@@ -71,33 +100,174 @@ function App() {
         html { scroll-behavior: smooth; }
         body { margin: 0; }
 
+        @keyframes gradientMove {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+
+        @keyframes floatOrb {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          50% { transform: translateY(-16px) translateX(8px); }
+        }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes typing {
+          from { width: 0; }
+          to { width: 21ch; }
+        }
+
+        @keyframes hideCursor {
+          0%, 85% { border-right-color: #48cfff; }
+          100% { border-right-color: transparent; }
+        }
+
+        @keyframes pulseGlow {
+          0%, 100% { text-shadow: 0 0 10px rgba(249, 115, 22, 0.25); }
+          50% { text-shadow: 0 0 22px rgba(249, 115, 22, 0.75); }
+        }
+
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.45; transform: scale(1); }
+          50% { opacity: 0.95; transform: scale(1.03); }
+        }
+
+        @keyframes photoGlow {
+          0%, 100% {
+            box-shadow:
+              0 0 0 2px rgba(72, 207, 255, 0.18),
+              0 0 22px rgba(72, 207, 255, 0.38),
+              0 0 46px rgba(72, 207, 255, 0.2);
+          }
+          50% {
+            box-shadow:
+              0 0 0 2px rgba(72, 207, 255, 0.32),
+              0 0 28px rgba(72, 207, 255, 0.58),
+              0 0 64px rgba(72, 207, 255, 0.3);
+          }
+        }
+
         .app {
           min-height: 100vh;
-          padding: 24px 20px 44px;
+          padding: 26px 16px 44px;
           font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          color: #e2e8f0;
-          background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 40%, #0f172a 100%);
+          color: #d9ecff;
+          background:
+            radial-gradient(circle at 12% 18%, rgba(38, 173, 255, 0.18), transparent 36%),
+            radial-gradient(circle at 84% 78%, rgba(14, 132, 255, 0.18), transparent 36%),
+            linear-gradient(160deg, #010712 0%, #020a1d 45%, #03122f 100%);
+          background-size: 180% 180%;
+          animation: gradientMove 14s ease infinite;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .app::before,
+        .app::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .app::before {
+          background-image:
+            radial-gradient(2px 2px at 12% 22%, rgba(255, 255, 255, 0.75) 45%, transparent 46%),
+            radial-gradient(1.5px 1.5px at 28% 64%, rgba(255, 255, 255, 0.65) 45%, transparent 46%),
+            radial-gradient(1.8px 1.8px at 44% 18%, rgba(125, 211, 252, 0.7) 45%, transparent 46%),
+            radial-gradient(1.4px 1.4px at 61% 48%, rgba(255, 255, 255, 0.62) 45%, transparent 46%),
+            radial-gradient(2px 2px at 74% 28%, rgba(56, 189, 248, 0.75) 45%, transparent 46%),
+            radial-gradient(1.3px 1.3px at 83% 73%, rgba(255, 255, 255, 0.6) 45%, transparent 46%),
+            radial-gradient(1.7px 1.7px at 92% 15%, rgba(125, 211, 252, 0.68) 45%, transparent 46%);
+          opacity: 0.65;
+          animation: twinkle 6s ease-in-out infinite;
+        }
+
+        .app::after {
+          background-image:
+            radial-gradient(1.2px 1.2px at 8% 78%, rgba(255, 255, 255, 0.45) 45%, transparent 46%),
+            radial-gradient(1.5px 1.5px at 22% 40%, rgba(125, 211, 252, 0.5) 45%, transparent 46%),
+            radial-gradient(1.3px 1.3px at 36% 86%, rgba(255, 255, 255, 0.5) 45%, transparent 46%),
+            radial-gradient(1.4px 1.4px at 55% 70%, rgba(56, 189, 248, 0.55) 45%, transparent 46%),
+            radial-gradient(1.2px 1.2px at 69% 10%, rgba(255, 255, 255, 0.44) 45%, transparent 46%),
+            radial-gradient(1.5px 1.5px at 79% 58%, rgba(125, 211, 252, 0.48) 45%, transparent 46%),
+            radial-gradient(1.1px 1.1px at 95% 92%, rgba(255, 255, 255, 0.42) 45%, transparent 46%);
+          opacity: 0.48;
+          animation: twinkle 8s ease-in-out infinite reverse;
         }
 
         .container {
-          width: min(1080px, 100%);
+          width: min(980px, 100%);
           margin: 0 auto;
           display: grid;
-          gap: 22px;
+          gap: 16px;
+          position: relative;
+        }
+
+        .container::before,
+        .container::after {
+          content: "";
+          position: fixed;
+          border-radius: 999px;
+          pointer-events: none;
+          filter: blur(48px);
+          z-index: 0;
+          opacity: 0.22;
+          animation: floatOrb 8s ease-in-out infinite;
+        }
+
+        .container::before {
+          width: 240px;
+          height: 240px;
+          top: 8%;
+          left: 2%;
+          background: radial-gradient(circle, #22d3ee 0%, rgba(34, 211, 238, 0) 70%);
+        }
+
+        .container::after {
+          width: 210px;
+          height: 210px;
+          bottom: 8%;
+          right: 4%;
+          background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+          animation-delay: 2s;
         }
 
         .surface {
-          border: 1px solid rgba(226, 232, 240, 0.2);
-          background: rgba(15, 23, 42, 0.72);
+          position: relative;
+          z-index: 1;
+          border: 1px solid rgba(56, 189, 248, 0.2);
+          background: rgba(3, 16, 38, 0.88);
           backdrop-filter: blur(8px);
           border-radius: 18px;
-          box-shadow: 0 15px 32px rgba(2, 6, 23, 0.35);
+          box-shadow: 0 14px 30px rgba(0, 7, 20, 0.65), inset 0 0 0 1px rgba(56, 189, 248, 0.08);
+          animation: fadeUp 0.65s ease both;
         }
+
+        .fade-up {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+        }
+
+        .fade-up.appear {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .fade-up-delay-1 { transition-delay: 0.1s; }
+        .fade-up-delay-2 { transition-delay: 0.2s; }
+        .fade-up-delay-3 { transition-delay: 0.3s; }
 
         .navbar {
           position: sticky;
           top: 8px;
-          z-index: 10;
+          z-index: 15;
           padding: 14px 20px;
           display: flex;
           align-items: center;
@@ -107,9 +277,14 @@ function App() {
 
         .brand {
           font-weight: 800;
-          color: #67e8f9;
-          font-size: 1.15rem;
+          color: #60dfff;
+          font-size: 1rem;
           text-decoration: none;
+          letter-spacing: 0.3px;
+          border: 1px solid rgba(96, 223, 255, 0.35);
+          background: rgba(8, 42, 88, 0.5);
+          border-radius: 9px;
+          padding: 3px 9px;
         }
 
         .nav-links {
@@ -119,39 +294,210 @@ function App() {
         }
 
         .nav-link {
-          color: #e2e8f0;
+          color: #d4e7fb;
           text-decoration: none;
-          font-weight: 600;
-          font-size: 0.95rem;
-          transition: color 0.2s ease;
+          font-weight: 500;
+          font-size: 0.8rem;
+          transition: color 0.2s ease, text-shadow 0.2s ease;
         }
 
-        .nav-link:hover { color: #67e8f9; }
+        .nav-link:hover {
+          color: #60dfff;
+          text-shadow: 0 0 12px rgba(96, 223, 255, 0.5);
+        }
 
         .hero {
+          position: relative;
+          overflow: hidden;
           display: grid;
+          grid-template-columns: 1.25fr 0.75fr;
           gap: 20px;
-          grid-template-columns: 1.35fr 1fr;
-          padding: 32px;
+          min-height: 360px;
+          align-items: center;
+          padding: 22px;
+          isolation: isolate;
+          border: 1px solid rgba(96, 223, 255, 0.28);
+        }
+
+        .hero::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: linear-gradient(95deg, rgba(2, 10, 24, 0.95) 0%, rgba(3, 14, 35, 0.78) 38%, rgba(4, 19, 46, 0.32) 70%), var(--hero-bg);
+          background-size: cover, cover;
+          background-position: center 20%, center;
+          z-index: -2;
+          transform: scale(1.02);
+        }
+
+        .hero::after {
+          content: "";
+          position: absolute;
+          inset: -45% -20%;
+          background: conic-gradient(from 90deg, transparent, rgba(14, 165, 233, 0.15), transparent, rgba(56, 189, 248, 0.15), transparent);
+          animation: gradientMove 9s linear infinite;
+          z-index: -1;
+          mix-blend-mode: screen;
         }
 
         .hero h1 {
           margin: 0;
-          font-size: clamp(1.9rem, 5vw, 3rem);
+          font-size: clamp(2rem, 5vw, 3.2rem);
           line-height: 1.1;
+          color: #eff7ff;
         }
 
-        .name-highlight { color: #fde047; }
+        .name-row {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+
+        .name-highlight {
+          color: #48cfff;
+          display: inline-block;
+          animation: pulseGlow 2.6s ease-in-out infinite;
+        }
+
+        .role-line {
+          margin: 10px 0 14px;
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: #d2eaff;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .role-highlight {
+          display: inline-block;
+          color: #48cfff;
+          white-space: nowrap;
+          overflow: hidden;
+          border-right: 2px solid #48cfff;
+          width: 0;
+          animation:
+            typing 2.2s steps(20, end) forwards,
+            hideCursor 2.5s ease forwards;
+          text-shadow: 0 0 12px rgba(72, 207, 255, 0.65);
+          min-height: 1.3em;
+          padding-right: 3px;
+        }
+
+        .hero-media {
+          justify-self: end;
+          position: relative;
+          width: min(250px, 100%);
+          aspect-ratio: 1 / 1.2;
+          animation: fadeUp 0.9s ease both;
+        }
+
+        .hero-media::before {
+          content: "";
+          position: absolute;
+          inset: -10px;
+          border-radius: 24px;
+          border: 1px solid rgba(72, 207, 255, 0.28);
+          box-shadow: 0 0 18px rgba(72, 207, 255, 0.35);
+          pointer-events: none;
+          animation: photoGlow 3.2s ease-in-out infinite;
+        }
+
+        .hero-media::after {
+          content: "";
+          position: absolute;
+          inset: -16px;
+          border-radius: 30px;
+          background:
+            linear-gradient(110deg, rgba(72, 207, 255, 0.2), transparent 35%, transparent 65%, rgba(72, 207, 255, 0.2));
+          filter: blur(8px);
+          z-index: -1;
+          pointer-events: none;
+          opacity: 0.85;
+        }
+
+        .hero-photo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 26%;
+          border-radius: 18px;
+          border: 1px solid rgba(72, 207, 255, 0.7);
+          box-shadow: 0 0 0 3px rgba(72, 207, 255, 0.16), 0 0 28px rgba(72, 207, 255, 0.45);
+          animation: floatOrb 5s ease-in-out infinite;
+          background: radial-gradient(circle at 40% 20%, rgba(34, 211, 238, 0.22), rgba(0, 0, 0, 0.65));
+        }
+
+        .hero-photo-fallback {
+          width: 100%;
+          height: 100%;
+          display: grid;
+          place-items: center;
+          color: #f8fafc;
+          font-weight: 700;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
+        }
+
+        .hero-badge {
+          position: absolute;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(3, 14, 35, 0.95);
+          border: 1px solid rgba(72, 207, 255, 0.55);
+          color: #7ee7ff;
+          font-weight: 700;
+          font-size: 0.7rem;
+          box-shadow: 0 0 16px rgba(34, 211, 238, 0.25);
+        }
+
+        .hero-badge-top {
+          top: 18px;
+          right: -6px;
+          animation: floatOrb 4.3s ease-in-out infinite;
+        }
+
+        .hero-badge-bottom {
+          left: -8px;
+          bottom: 24px;
+          border-color: rgba(72, 207, 255, 0.55);
+          color: #7ee7ff;
+          box-shadow: 0 0 16px rgba(72, 207, 255, 0.25);
+          animation: floatOrb 4.8s ease-in-out infinite;
+        }
+
         .subtitle {
           margin: 8px 0 14px;
-          color: #dbeafe;
+          color: #c7dcf7;
           font-weight: 600;
         }
+
         .hero p {
           margin: 0;
-          color: #cbd5e1;
+          color: #c8dcf6;
           line-height: 1.65;
           max-width: 640px;
+        }
+
+        .social-row {
+          margin-top: 10px;
+          display: flex;
+          gap: 8px;
+        }
+
+        .social-btn {
+          width: 28px;
+          height: 28px;
+          display: grid;
+          place-items: center;
+          border-radius: 8px;
+          border: 1px solid rgba(72, 207, 255, 0.35);
+          color: #7ee7ff;
+          text-decoration: none;
+          font-size: 0.8rem;
+          background: rgba(5, 25, 56, 0.8);
         }
 
         .hero-actions {
@@ -159,22 +505,6 @@ function App() {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
-        }
-
-        .hero-icon {
-          align-self: center;
-          justify-self: center;
-          width: 132px;
-          aspect-ratio: 1;
-          border-radius: 50%;
-          display: grid;
-          place-items: center;
-          font-size: 3rem;
-          font-weight: 800;
-          color: #f8fafc;
-          border: 1px solid rgba(148, 163, 184, 0.35);
-          background: rgba(99, 102, 241, 0.36);
-          box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.08);
         }
 
         .stats-grid {
@@ -187,30 +517,28 @@ function App() {
           text-align: center;
           padding: 20px 12px;
           border-radius: 14px;
-          border: 1px solid rgba(148, 163, 184, 0.28);
-          background: rgba(30, 41, 59, 0.56);
+          border: 1px solid rgba(72, 207, 255, 0.2);
+          background: rgba(4, 19, 46, 0.86);
         }
 
         .stat-value {
           display: block;
           font-size: 1.9rem;
           font-weight: 800;
-          color: #38bdf8;
+          color: #48cfff;
         }
 
-        .section {
-          padding: 24px;
-        }
+        .section { padding: 24px; }
 
         .section-title {
           margin: 0 0 6px;
           font-size: 1.6rem;
-          color: #f8fafc;
+          color: #fff7ed;
         }
 
         .section-intro {
           margin: 0 0 16px;
-          color: #bfdbfe;
+          color: #f9c8a8;
         }
 
         .about-grid {
@@ -221,19 +549,19 @@ function App() {
 
         .panel {
           border-radius: 14px;
-          border: 1px solid rgba(148, 163, 184, 0.24);
+          border: 1px solid rgba(34, 211, 238, 0.22);
           padding: 18px;
-          background: rgba(30, 41, 59, 0.5);
+          background: rgba(9, 9, 9, 0.65);
         }
 
         .panel h3 {
           margin: 0 0 10px;
-          color: #67e8f9;
+          color: #22d3ee;
         }
 
         .panel p,
         .panel li {
-          color: #dbeafe;
+          color: #f5e5d8;
           line-height: 1.6;
         }
 
@@ -247,9 +575,9 @@ function App() {
           list-style: none;
           padding: 7px 12px;
           border-radius: 999px;
-          border: 1px solid rgba(56, 189, 248, 0.42);
-          background: rgba(56, 189, 248, 0.14);
-          color: #e0f2fe;
+          border: 1px solid rgba(249, 115, 22, 0.35);
+          background: rgba(249, 115, 22, 0.12);
+          color: #ffe9dc;
           font-weight: 600;
           font-size: 0.9rem;
           transition: transform 0.2s ease, background 0.2s ease;
@@ -257,7 +585,7 @@ function App() {
 
         .chip:hover {
           transform: translateY(-2px);
-          background: rgba(56, 189, 248, 0.28);
+          background: rgba(249, 115, 22, 0.22);
         }
 
         .project-grid {
@@ -269,15 +597,15 @@ function App() {
         .project-card {
           padding: 18px;
           border-radius: 15px;
-          border: 1px solid rgba(148, 163, 184, 0.22);
-          background: rgba(30, 41, 59, 0.56);
+          border: 1px solid rgba(249, 115, 22, 0.24);
+          background: rgba(15, 15, 15, 0.76);
           transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
         .project-card:hover {
           transform: translateY(-5px);
-          border-color: rgba(125, 211, 252, 0.8);
-          box-shadow: 0 14px 24px rgba(2, 6, 23, 0.4);
+          border-color: #22d3ee;
+          box-shadow: 0 14px 24px rgba(34, 211, 238, 0.2);
         }
 
         .project-head {
@@ -290,7 +618,7 @@ function App() {
         .project-head h3 {
           margin: 0;
           font-size: 1.05rem;
-          color: #f8fafc;
+          color: #fff7ed;
         }
 
         .project-stack {
@@ -306,8 +634,9 @@ function App() {
           font-size: 0.82rem;
           border-radius: 8px;
           padding: 5px 8px;
-          background: rgba(15, 23, 42, 0.74);
-          border: 1px solid rgba(148, 163, 184, 0.3);
+          background: rgba(251, 146, 60, 0.14);
+          border: 1px solid rgba(251, 146, 60, 0.32);
+          color: #ffe9dc;
         }
 
         .project-actions {
@@ -332,18 +661,18 @@ function App() {
 
         .btn:hover {
           transform: translateY(-2px);
-          filter: brightness(1.08);
+          filter: brightness(1.1);
         }
 
         .btn-primary {
-          background: #facc15;
-          color: #111827;
+          background: linear-gradient(90deg, #22d3ee 0%, #38bdf8 100%);
+          color: #012032;
         }
 
         .btn-secondary {
-          color: #f1f5f9;
-          background: rgba(15, 23, 42, 0.78);
-          border-color: rgba(148, 163, 184, 0.38);
+          color: #e5f3ff;
+          background: rgba(3, 19, 45, 0.82);
+          border-color: rgba(72, 207, 255, 0.4);
         }
 
         .internship-list {
@@ -363,46 +692,47 @@ function App() {
           text-decoration: none;
           color: inherit;
           border-radius: 14px;
-          border: 1px solid rgba(148, 163, 184, 0.26);
-          background: rgba(30, 41, 59, 0.56);
+          border: 1px solid rgba(249, 115, 22, 0.24);
+          background: rgba(15, 15, 15, 0.74);
           padding: 14px;
           transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
         .contact-card:hover {
           transform: translateY(-3px);
-          border-color: rgba(250, 204, 21, 0.7);
+          border-color: #22d3ee;
         }
 
         .contact-card span {
           display: block;
-          color: #cbd5e1;
+          color: #f9c8a8;
           font-size: 0.9rem;
         }
 
-        .contact-card strong {
-          color: #f8fafc;
-        }
+        .contact-card strong { color: #fff7ed; }
 
         footer {
           text-align: center;
-          color: #cbd5e1;
+          color: #f9c8a8;
           font-size: 0.9rem;
           padding-top: 10px;
         }
 
         @media (max-width: 840px) {
-          .hero,
-          .about-grid {
-            grid-template-columns: 1fr;
+          .about-grid { grid-template-columns: 1fr; }
+          .hero { min-height: 430px; padding: 20px; }
+          .hero { grid-template-columns: 1fr; }
+          .hero-media {
+            justify-self: center;
+            width: min(220px, 100%);
+            margin-top: 8px;
           }
-
-          .hero-icon { width: 105px; font-size: 2.4rem; }
+          .role-highlight { width: auto; max-width: 100%; }
         }
       `}</style>
 
       <main className="container">
-        <nav className="navbar surface">
+        <nav className="navbar surface fade-up">
           <a href="#home" className="brand">YH</a>
           <div className="nav-links">
             <a className="nav-link" href="#home">Home</a>
@@ -412,38 +742,63 @@ function App() {
           </div>
         </nav>
 
-        <header id="home" className="hero surface">
+        <header id="home" className="hero surface fade-up" style={{ "--hero-bg": `url("${heroBackground}")` }}>
           <div>
             <h1>
-              Hi, I&apos;m <span className="name-highlight">Yaswanth Hari</span>
+              Hello, It&apos;s Me{" "}
+              <span className="name-row">
+                <span className="name-highlight">Yaswanth Hari</span>
+              </span>
             </h1>
-            <p className="subtitle">B.Tech in computer science and artificial intelligence</p>
+            <p className="role-line">
+              <span>And I&apos;m a</span>
+              <span className="role-highlight">Full Stack Developer</span>
+            </p>
+            <p className="subtitle">B.Tech in Computer Science and Artificial Intelligence</p>
             <p>
               Motivated AI student with hands-on experience in Python, Machine Learning, and Web
               Development. Passionate about building problem-solving applications that make a difference.
             </p>
+            <div className="social-row">
+              <a className="social-btn" href={profileLinks.github} target="_blank" rel="noreferrer">G</a>
+              <a className="social-btn" href={profileLinks.linkedin} target="_blank" rel="noreferrer">in</a>
+              <a className="social-btn" href={profileLinks.email}>@</a>
+            </div>
             <div className="hero-actions">
               <a className="btn btn-primary" href={profileLinks.linkedin} target="_blank" rel="noreferrer">
-                 Connect
+                Let&apos;s Connect
               </a>
               <a className="btn btn-secondary" href="#projects">
                 View Projects
               </a>
             </div>
           </div>
-          <div className="hero-icon">&lt;/&gt;</div>
+          <div className="hero-media">
+            {imageIndex < imageCandidates.length ? (
+              <img
+                src={imageCandidates[imageIndex]}
+                alt="Yaswanth Hari"
+                className="hero-photo"
+                onError={() => setImageIndex((prev) => prev + 1)}
+              />
+            ) : (
+              <div className="hero-photo hero-photo-fallback">Yaswanth Hari</div>
+            )}
+            <span className="hero-badge hero-badge-top">React + ML</span>
+            <span className="hero-badge hero-badge-bottom">Web Developer</span>
+          </div>
         </header>
 
-        <section className="stats-grid">
+        <section className="stats-grid fade-up">
           {stats.map((item) => (
-            <article className="stat surface" key={item.label}>
+            <article className="stat surface fade-up fade-up-delay-1" key={item.label}>
               <span className="stat-value">{item.value}</span>
               <span>{item.label}</span>
             </article>
           ))}
         </section>
 
-        <section id="about" className="section surface">
+        <section id="about" className="section surface fade-up">
           <h2 className="section-title">About Me</h2>
           <p className="section-intro">Get to know me better</p>
           <div className="about-grid">
@@ -483,12 +838,12 @@ function App() {
           </div>
         </section>
 
-        <section id="projects" className="section surface">
+        <section id="projects" className="section surface fade-up">
           <h2 className="section-title">My Projects</h2>
           <p className="section-intro">Real-world applications I&apos;ve built</p>
           <div className="project-grid">
             {projects.map((project) => (
-              <article className="project-card" key={project.title}>
+              <article className="project-card fade-up fade-up-delay-2" key={project.title}>
                 <div className="project-head">
                   <span>{project.icon}</span>
                   <h3>{project.title}</h3>
@@ -514,7 +869,7 @@ function App() {
           </div>
         </section>
 
-        <section className="section surface">
+        <section className="section surface fade-up">
           <h2 className="section-title">Internship Experience</h2>
           <p className="section-intro">AI & Machine Learning Intern - SmartBridge</p>
           <article className="panel">
@@ -528,7 +883,7 @@ function App() {
           </article>
         </section>
 
-        <section id="contact" className="section surface">
+        <section id="contact" className="section surface fade-up">
           <h2 className="section-title">Contact</h2>
           <p className="section-intro">Let&apos;s connect for internship and fresher opportunities.</p>
           <div className="contact-grid">
@@ -547,7 +902,7 @@ function App() {
           </div>
         </section>
 
-        <footer>
+        <footer className="fade-up">
           <p>© 2025 Yaswanth Hari. All rights reserved.</p>
           <p>
             <a className="nav-link" href={profileLinks.github} target="_blank" rel="noreferrer">GitHub</a>
